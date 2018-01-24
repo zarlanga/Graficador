@@ -22,21 +22,23 @@ public class VistaSF {
 
         f = new JFrame("Swing Paint Demo");
         gra = new MyPanel();
+        JPanel ecuacion = new JPanel();
         text = new JTextField[4];
         FlowLayout testLayout = new FlowLayout();
 
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setLayout(testLayout);
+        ecuacion.setLayout(testLayout);
 
         for (int i = 0; i < text.length; i++) {
             text[i] = new JTextField();
             text[i].setText(i + "");
-            f.add(text[i]);
+            text[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            ecuacion.add(text[i]);
 
         }
 
-
-        f.add(gra);
+        f.add(ecuacion, BorderLayout.NORTH);
+        f.add(gra, BorderLayout.SOUTH);
 
         f.pack();
         f.setVisible(true);
@@ -47,6 +49,8 @@ public class VistaSF {
 class MyPanel extends JPanel {
 
     int i;
+
+    int escalaX = 50;
 
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -59,26 +63,39 @@ class MyPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         i++;
+        graficarEje(g);
+        graficarFuncionSeno(g, 0.5, 200, 0);
 
-        int y0 = this.getHeight() / 2;
-        int y1;
-
-        g.drawLine(0, y0, this.getWidth(), y0);
-        g.setColor(Color.red);
-//        System.out.println(Math.sin(Math.PI/2));
-        for (int x0 = 1; x0 < this.getWidth(); x0++) {
-            y1 = y0 + (int) ((this.getHeight() / 4) * Math.sin(x0 / (180 / Math.PI)));
-//            y1=2*x0;
-            g.drawLine(x0, y1, x0 + 1, y1);
-//            System.out.println("x0="+ x0 +  "\ny1=" + y1);
-        }
-
-//        g.drawLine(0, 30, 60, 60);
-        // Draw Text
-        g.drawString("Altura " + this.getHeight() + "\n Ancho " + this.getWidth(), 10, 20);
+//        g.drawString("Altura " + this.getHeight() + "\n Ancho " + this.getWidth(), 10, 20);
     }
 
-    public void graficarFuncion() {
+    public void graficarEje(Graphics g) {
+        int y = this.getHeight() / 2;
+        g.drawLine(0, y, this.getWidth(), y);
+        int x = 0;
+        
+        while (x < this.getWidth()) {
+            g.drawLine(x*escalaX, y + 4, x*escalaX, y - 4);
+            x ++;
+            g.drawString(x+"", x*escalaX -2, y-10);
+        }
 
+    }
+
+    public void graficarFuncionSeno(Graphics g, double fr, int amp, int fase) {
+        int y;
+        int yAnt = calcularYSeno(0, fr, amp, fase);
+        g.setColor(Color.red);
+        for (int x = 1; x < this.getWidth(); x++) {
+            y=calcularYSeno(x, fr, amp, fase);
+            g.drawLine(x, yAnt, x + 1, y);
+            yAnt=y;
+
+        }
+
+    }
+
+    public int calcularYSeno(int x, double fr, int amp, int fase) {
+        return this.getHeight() / 2 - (int) (amp * Math.sin(fase + fr * (x / (180 / Math.PI))));
     }
 }
