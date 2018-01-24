@@ -23,18 +23,20 @@ public class VistaSF {
         f = new JFrame("Swing Paint Demo");
         gra = new MyPanel();
         text = new JTextField[4];
+        FlowLayout testLayout = new FlowLayout();
+
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setLayout(testLayout);
 
         for (int i = 0; i < text.length; i++) {
             text[i] = new JTextField();
-//            System.out.println(text[i]);
-//            text[i].setBounds(0, i*30, f.getWidth(), 30);
             text[i].setText(i + "");
-            f.getContentPane().add(text[i], BorderLayout.NORTH);
+            f.add(text[i]);
 
         }
 
-        f.getContentPane().add(gra, BorderLayout.SOUTH);
+
+        f.add(gra);
 
         f.pack();
         f.setVisible(true);
@@ -57,17 +59,17 @@ class MyPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         i++;
-        
-        int y0 = this.getHeight()/2;
+
+        int y0 = this.getHeight() / 2;
         int y1;
-        
-        g.drawLine(0, y0 , this.getWidth(), y0);
+
+        g.drawLine(0, y0, this.getWidth(), y0);
         g.setColor(Color.red);
 //        System.out.println(Math.sin(Math.PI/2));
-        for (int x0=1; x0 < this.getWidth(); x0++ ) {
-            y1=y0 + (int) ((this.getHeight()/4) * Math.sin(x0/(180/Math.PI))) ;
+        for (int x0 = 1; x0 < this.getWidth(); x0++) {
+            y1 = y0 + (int) ((this.getHeight() / 4) * Math.sin(x0 / (180 / Math.PI)));
 //            y1=2*x0;
-          g.drawLine(x0, y1 , x0+1, y1);
+            g.drawLine(x0, y1, x0 + 1, y1);
 //            System.out.println("x0="+ x0 +  "\ny1=" + y1);
         }
 
@@ -75,8 +77,8 @@ class MyPanel extends JPanel {
         // Draw Text
         g.drawString("Altura " + this.getHeight() + "\n Ancho " + this.getWidth(), 10, 20);
     }
-    
-    public void graficarFuncion(){
-        
+
+    public void graficarFuncion() {
+
     }
 }
