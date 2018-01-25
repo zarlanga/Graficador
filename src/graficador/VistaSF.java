@@ -14,31 +14,41 @@ import javax.swing.*;
  */
 public class VistaSF {
 
-    JFrame f;
+//    JFrame f;
     MyPanel gra;
-    JTextField[] text;
+    JSpinner[] text;
+    JLabel[] nombreVar;
+    
 
     public void iniciar() {
 
-        f = new JFrame("Swing Paint Demo");
+        JFrame f = new JFrame("Graficador");
         gra = new MyPanel();
         JPanel ecuacion = new JPanel();
-        text = new JTextField[4];
+        text = new JSpinner[3];
+        nombreVar= new JLabel[3];
+        String[] descVar={"Frecuencia","Amplitud",  "fase"};
+        double[] valVar={ 1, 200, 0};
+    
         FlowLayout testLayout = new FlowLayout();
-
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ecuacion.setLayout(testLayout);
 
+        
         for (int i = 0; i < text.length; i++) {
-            text[i] = new JTextField();
-            text[i].setText(i + "");
-            text[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            nombreVar[i]=new JLabel();
+            nombreVar[i].setText(descVar[i]);
+            ecuacion.add(nombreVar[i]);
+            
+            text[i] = new JSpinner();
+            text[i].setValue(valVar[i]);
             ecuacion.add(text[i]);
-
         }
+        
 
         f.add(ecuacion, BorderLayout.NORTH);
         f.add(gra, BorderLayout.SOUTH);
+        
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         f.pack();
         f.setVisible(true);
@@ -48,9 +58,7 @@ public class VistaSF {
 
 class MyPanel extends JPanel {
 
-    int i;
-
-    int escalaX = 50;
+    int escalaX = 30;
 
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -62,9 +70,9 @@ class MyPanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        i++;
+        
         graficarEje(g);
-        graficarFuncionSeno(g, 0.5, 200, 0);
+        graficarFuncionSeno(g, 1, 200, 0);
 
 //        g.drawString("Altura " + this.getHeight() + "\n Ancho " + this.getWidth(), 10, 20);
     }
@@ -96,6 +104,12 @@ class MyPanel extends JPanel {
     }
 
     public int calcularYSeno(int x, double fr, int amp, int fase) {
-        return this.getHeight() / 2 - (int) (amp * Math.sin(fase + fr * (x / (180 / Math.PI))));
+        return this.getHeight() / 2 - (int) (amp * Math.sin(fase + fr * (x /(double)escalaX)));
+
+//resultado en grados
+//        return this.getHeight() / 2 - (int) (amp * Math.sin(fase + fr * ((x/(double) escalaX) / (180 / Math.PI)))); 
+
     }
+
+   
 }
